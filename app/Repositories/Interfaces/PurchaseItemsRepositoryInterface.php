@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Repositories\Interfaces;
+
+use App\Http\Requests\MakeSupplyOrderRequest;
+
+interface PurchaseItemsRepositoryInterface
+{
+
+    public function MakeSupplyOrder(MakeSupplyOrderRequest $request);
+}
