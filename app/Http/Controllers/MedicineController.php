@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MedicinesRequests\StoreMedicineRequest;
 use App\Http\Requests\MedicinesRequests\UpdateMedicineRequest;
+use App\Http\Resources\GetAllMedicines;
+use App\Http\Resources\GetMedicineResource;
 use App\Repositories\Interfaces\MedicineRepositoryInterface;
 
 class MedicineController extends Controller
@@ -18,7 +20,8 @@ class MedicineController extends Controller
 //-------------------------CRUD--------------------------
     public function index()
     {
-        return $this->medicineRepository->all();
+        $medicines= $this->medicineRepository->all();
+        return GetAllMedicines::collection($medicines);
     }
 
     public function store(StoreMedicineRequest $request)
@@ -28,7 +31,8 @@ class MedicineController extends Controller
 
     public function show(int $id)
     {
-        return $medicine = $this->medicineRepository->find($id);
+         $medicine = $this->medicineRepository->find($id);
+         return new GetMedicineResource($medicine);
     }
 
     public function update(UpdateMedicineRequest $request, $id)

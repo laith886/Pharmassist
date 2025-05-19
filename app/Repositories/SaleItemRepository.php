@@ -16,10 +16,11 @@ class SaleItemRepository implements SaleItemRepositoryInterface
 
         foreach ($items as $item) {
             $medicine = Medicine::find($item['medicine_id']);
+
             if (!$medicine || $medicine->quantity_in_stock < $item['quantity']) {
                 return [
                     'status' => false,
-                    'message' => "ID : the quantity is over the stock {$item['medicine_id']}"
+                    'message' => "the quantity is over the stock of  {$item['medicine_id']}"
                 ];
             }
 
