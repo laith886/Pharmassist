@@ -53,9 +53,10 @@ class MedicineRepository implements MedicineRepositoryInterface
             return null;
         }
 
-        $medicines = $category->medicines;
+
 
         return $category->medicines;
     }
+
 
 }

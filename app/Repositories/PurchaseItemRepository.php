@@ -8,13 +8,9 @@ class PurchaseItemRepository
 
         foreach($items as $item){
 
-            $quantity=$item['quantity'];
-
-            if($quantity<=0){
+            if($item['quantity']<=0){
                 return false;
             }
-
-
         }
         return true;
     }
@@ -22,9 +18,9 @@ class PurchaseItemRepository
 
     public function MakeOrderSupply(array $data){
         if(!$this->CheckQuantities($data)){
-            return null;
+            return ['staus'=>'fail','message:invalid quantities'];
         }
-
+        
 
     }
 

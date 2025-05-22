@@ -12,7 +12,7 @@ class GetAllMedicines extends JsonResource
     {
         $categories = [];
         foreach ($this->categories as $category) {
-            $categories[] = $category->name;
+            $categories[] = $category->category_name;
         }
 
         return [
@@ -25,7 +25,7 @@ class GetAllMedicines extends JsonResource
             'production_date'=>$this->production_date,
             'expiration_date'=>$this->expiration_date,
             'categories' => $categories,
-            'Manufacturer'=>$this->manufacturer()->company_name
+            'Manufacturer'=>$this->manufacturer->company_name
         ];
     }
 }

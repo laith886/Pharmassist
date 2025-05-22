@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manufacturer;
+use App\Repositories\Interfaces\ManufactururRepositoryInterface;
+use App\Repositories\Interfaces\MedicineRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ManufacturerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $ManufacturerRepository;
+
+    public function __construct(ManufactururRepositoryInterface $ManufacturerRepository)
+    {
+        $this->ManufacturerRepository = $ManufacturerRepository;
+    }
     public function index()
     {
         //
@@ -61,5 +66,12 @@ class ManufacturerController extends Controller
     public function destroy(Manufacturer $manufacturer)
     {
         //
+    }
+
+    public function GetMedicines(string $ManuName){
+
+        return $this->ManufacturerRepository->GetManufacturerMedicines($ManuName);
+
+
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\SaleItemController;
@@ -20,3 +21,7 @@ Route::post('Login',[PharmacistController::class,'login']);
 //--------------------------------SELL Medicine------------------------------
 Route::post('Sell Medicine',[SaleItemController::class.'Sell'])->middleware('auth:sanctum');
 //--------------------------------END SELL-----------------------------------
+
+
+//-------------------------------Manufacturer------------------------------------
+Route::get('GetManufacturerMedicines/{ManufacturerName}',[ManufacturerController::class,'GetMedicines']);
