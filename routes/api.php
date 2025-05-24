@@ -25,3 +25,8 @@ Route::post('Sell Medicine',[SaleItemController::class.'Sell'])->middleware('aut
 
 //-------------------------------Manufacturer------------------------------------
 Route::get('GetManufacturerMedicines/{ManufacturerName}',[ManufacturerController::class,'GetMedicines']);
+//-------------------------------END Manufacturer--------------------------------
+
+//------------------------------Category----------------------------------------
+
+
