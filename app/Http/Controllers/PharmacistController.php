@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PharmacistRequests\RegisterPharmacistRequest;
 use App\Http\Requests\PharmacistRequests\UpdatePharmacistRequest;
 use App\Models\Pharmacist;
+use App\Models\SaleItem;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PharmacistController extends Controller
 {
@@ -68,6 +70,9 @@ class PharmacistController extends Controller
         ]));
     }
 
+    public function GetPharmacistSales(){
+       return $this->pharmacistRepository->GetPharmacistSales();
+    }
 
 
 }

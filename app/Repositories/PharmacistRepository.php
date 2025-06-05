@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Pharmacist;
+use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PharmacistRepository implements PharmacistRepositoryInterface
@@ -61,6 +64,11 @@ class PharmacistRepository implements PharmacistRepositoryInterface
             'pharmacist' => $pharmacist,
             'token' => $token,
         ]);
+    }
+
+    public function GetPharmacistSales(){
+        $sales = Sale::where('pharmacist_id', Auth::id())->get();
+        return $sales;
     }
 
 }

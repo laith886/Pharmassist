@@ -20,4 +20,8 @@ Route::post('Login',[PharmacistController::class,'login']);
 
 //--------------------------------SELL Medicine------------------------------
 Route::post('SellMedicine',[SaleItemController::class,'Sell'])->middleware('auth:sanctum');
+Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales'])->middleware('auth:sanctum');
 //--------------------------------END SELL-----------------------------------
+
+//--------------------------------Request Supply------------------------------
+Route::post('SupplyRequest');

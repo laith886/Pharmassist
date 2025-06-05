@@ -85,6 +85,10 @@ class SaleItemRepository implements SaleItemRepositoryInterface
             'status' => true,
             'message' => 'Sale operation completed successfully',
             'sale_id' => $sale->id,
+            'pharmacist_id'=>$sale['pharmacist_id']
         ];
     }
+
+
+
 }

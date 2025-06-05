@@ -21,7 +21,7 @@ class SaleItemController extends Controller
 
     public function index()
     {
-        //
+
     }
 
 

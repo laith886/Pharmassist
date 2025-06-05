@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'pharmacist' => [
+            'driver' => 'sanctum',
+            'provider' => 'pharmacists'
+        ]
     ],
 
     /*
@@ -64,6 +68,10 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+        'pharmacists' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Pharmacist::class
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
