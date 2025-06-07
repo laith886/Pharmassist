@@ -7,5 +7,5 @@ use App\Http\Requests\MakeSupplyOrderRequest;
 interface PurchaseItemsRepositoryInterface
 {
 
-    public function MakeSupplyOrder(MakeSupplyOrderRequest $request);
+    public function MakeSupplyOrder(array $items);
 }
