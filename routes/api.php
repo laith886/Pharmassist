@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\SaleItemController;
 use App\Models\Medicine;
+use App\Repositories\PurchaseItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +26,4 @@ Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales
 //--------------------------------END SELL-----------------------------------
 
 //--------------------------------Request Supply------------------------------
-Route::post('SupplyRequest');
+Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');

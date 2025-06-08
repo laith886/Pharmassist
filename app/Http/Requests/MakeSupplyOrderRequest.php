@@ -17,8 +17,12 @@ class MakeSupplyOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'sale_representative_id' => 'required|integer|exists:sale_representatives,id',
+
             'items' => 'required|array|min:1',
-            'items.*.medicine_id' => 'required|exists:medicine,id',
+
+            'items.*.medicine_id' => 'required|exists:medicines,id',
+
             'items.*.quantity' => 'required|integer|min:1',
         ];
     }

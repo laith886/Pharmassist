@@ -1,0 +1,3 @@
+Purchase_id,Medicine_id,"Medicine Name",Quantity,price
+10,1,cytamol,3,0
+10,2,panadol,1,0

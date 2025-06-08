@@ -3,16 +3,18 @@
 namespace App\Repositories;
 
 use App\Repositories\Interfaces\PurchaseItemsRepositoryInterface;
-use App\Http\Requests\MakeSupplyOrderRequest;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Medicine;
+use Illuminate\Support\Facades\Storage;
+use App\Models\SaleRepresentative;
+
 class PurchaseItemRepository implements PurchaseItemsRepositoryInterface
 {
 
 
-private function checkQuantities(array $items): array
+private function CheckQuantities(array $items): array
     {
         $PurchaseItems = [];
 
@@ -28,7 +30,7 @@ private function checkQuantities(array $items): array
             $PurchaseItems[] = [
                 'medicine' => $medicine,
                 'quantity' => $item['quantity'],
-                'price' => $medicine->price,
+                'price' => 0, //the price is zero because the sales representative shoul enter it
             ];
         }
 
@@ -37,42 +39,93 @@ private function checkQuantities(array $items): array
 
 private function CreatePurchase(array $items){
 
+    $saleRep = SaleRepresentative::with('warehouse')->findOrFail($items['sale_representative_id']);
+
     return Purchase::create([
-    'pharmaicst_id'=>Auth::id(),
+    'pharmacist_id' =>Auth::id(),
     'sale_representative_id'=>$items['sale_representative_id'],
-    'warehous_id'=>$items['warehouse_id'],
+    'warehouse_id'=> $saleRep->warehouse_id,
     'purchase_date'=>now(),
-    'status_id'=>'1'
+    'status_id'=>'1' //Pending
     ]);
 }
 
 private function CreatePurchaseItems(Purchase $purchase,array $items){
 
+    $purchaseItems=[];
 
     foreach($items as $item){
+
+
         PurchaseItem::create([
             'purchase_id'=>$purchase->id,
             'medicine_id'=>$item['medicine']->id,
-            'quantity'=>$item['quantity']
+            'quantity'=>$item['quantity'],
+            'price' => 0
         ]);
+
+
+        $purchaseItems[] = [
+                'medicine' => $item['medicine'],
+                'quantity' => $item['quantity'],
+            ];
+
+
+
     }
 
 
-
+    return $purchaseItems;
 
 
 
 }
+public function export(array $purchaseItems,Purchase $purchase)
+   {
+       $filename = "SupplyOrder_{$purchase->id}.csv";
+       $handle = fopen($filename,  'w');
+
+       fputcsv($handle, ['Purchase_id','Medicine_id','Medicine Name', 'Quantity','price']);
+
+       foreach ($purchaseItems as $item) {
+           fputcsv($handle,
+           [$purchase->id,
+           $item['medicine']->id,
+            $item['medicine']->name,
+             $item['quantity'],
+              $item['price'] ?? 0]);
+       }
+
+       fclose($handle);
+
+       Storage::put("exports/{$filename}", file_get_contents($filename));
+
+       return response()->download(storage_path("app/exports/{$filename}"));
+}
+
 public function MakeSupplyOrder(array $items){
 
-    $check=$this->CheckQuantity($items);
+    $check=$this->CheckQuantities($items['items']);
 
     if (!$check['status']) {
         return $check;
     }
 
+     $purchase = $this->CreatePurchase($items);
+
+     $purchaseItems = $this->CreatePurchaseItems($purchase, $check['data']); // هنا تمرر الناتج الصحيح
 
 
+    return $this->export($purchaseItems,$purchase);
 }
+
+
+
+
+
+
+
+
+
 
 }

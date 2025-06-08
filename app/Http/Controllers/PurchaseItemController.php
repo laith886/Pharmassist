@@ -5,70 +5,65 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MakeSupplyOrderRequest;
 use App\Models\PurchaseItem;
 use Illuminate\Http\Request;
-
+use App\Repositories\PurchaseItemRepository;
+use App\Repositories\Interfaces\PurchaseItemsRepositoryInterface;
 class PurchaseItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $purchaseItemRepository;
+
+    public function __construct(PurchaseItemsRepositoryInterface $PurchaseRepository)
+    {
+        $this->purchaseItemRepository = $PurchaseRepository;
+    }
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(PurchaseItem $purchaseItem)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(PurchaseItem $purchaseItem)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, PurchaseItem $purchaseItem)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PurchaseItem $purchaseItem)
     {
         //
     }
-    public function MakeSupplyOrder(MakeSupplyOrderRequest $request){
+   public function MakeSupplyOrder(MakeSupplyOrderRequest $request)
+    {
+        $validated = $request->validated();
+        $items = $validated['items'];
+        $saleRepresentativeId = $validated['sale_representative_id'];
 
 
+        $response = $this->purchaseItemRepository->MakeSupplyOrder([
+            'items' => $items,
+            'sale_representative_id' => $saleRepresentativeId,
+        ]);
 
+
+        return $response;
     }
-
-
-
 }
