@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Medicine;
 use Illuminate\Support\Facades\Storage;
 use App\Models\SaleRepresentative;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendSupplyOrder;
 
 class PurchaseItemRepository implements PurchaseItemsRepositoryInterface
 {
@@ -83,7 +85,8 @@ private function CreatePurchaseItems(Purchase $purchase,array $items){
 public function export(array $purchaseItems,Purchase $purchase)
    {
        $filename = "SupplyOrder_{$purchase->id}.csv";
-       $handle = fopen($filename,  'w');
+       $path = storage_path("app/public/{$filename}");
+       $handle = fopen($path, 'w');
 
        fputcsv($handle, ['Purchase_id','Medicine_id','Medicine Name', 'Quantity','price']);
 
@@ -98,9 +101,7 @@ public function export(array $purchaseItems,Purchase $purchase)
 
        fclose($handle);
 
-       Storage::put("exports/{$filename}", file_get_contents($filename));
-
-       return response()->download(storage_path("app/exports/{$filename}"));
+       return $path;
 }
 
 public function MakeSupplyOrder(array $items){
@@ -113,10 +114,18 @@ public function MakeSupplyOrder(array $items){
 
      $purchase = $this->CreatePurchase($items);
 
-     $purchaseItems = $this->CreatePurchaseItems($purchase, $check['data']); // هنا تمرر الناتج الصحيح
+     $purchaseItems = $this->CreatePurchaseItems($purchase, $check['data']);
+
+     $filePath = $this->export($purchaseItems,$purchase);
+
+     $representative = SaleRepresentative::find($items['sale_representative_id']);
+
+     $email = $representative->email;
+
+     Mail::to($email)->send(new SendSupplyOrder($filePath));
 
 
-    return $this->export($purchaseItems,$purchase);
+    return ['message' => 'Request sent successfully'];
 }
 
 
