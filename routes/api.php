@@ -30,3 +30,4 @@ Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales
 
 //--------------------------------Request Supply-----------------------------
 Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');
+Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase'])->middleware('auth:sanctum');

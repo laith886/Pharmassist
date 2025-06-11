@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pharmacist;
+use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
@@ -67,13 +68,20 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     }
 
     public function GetPharmacistSales(){
-    $pharmacistId = Auth::id(); // ✅ assign to variable first
+    $pharmacistId = Auth::id();
 
-    $saleItems = SaleItem::whereHas('sale', function ($query) use ($pharmacistId) {
-        $query->where('pharmacist_id', $pharmacistId);
-    })->get();
-
-    return $saleItems;
+     $sales = Sale::with(['pharmacist', 'salesItems.medicine'])->get();
+    return $sales;
 
 }
+
+public function GetPharmacistPurchases(){
+    $pharmacistId = Auth::id();
+
+    $purchases = Purchase::with(['pharmacist', 'PurchaseItems.medicine'])->get();
+    return $purchases;
+
+}
+
+
 }

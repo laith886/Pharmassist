@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Pharmacist;
+use App\Models\Sale;
 
 class GetPharmacistSales extends JsonResource
 {
@@ -15,12 +17,22 @@ class GetPharmacistSales extends JsonResource
     public function toArray(Request $request): array
     {
 
-        
+
+          $pharmacist=Pharmacist::find($this->pharmacist_id);
+
             return [
-            'id' => $this->id,
-            'sale_id' => $this->sale_id,
-            'medicine_name' => $this->medicine->name, // اسم الدواء من العلاقة
-            'quantity' => $this->quantity,
-            'price' => $this->price,];
+        'sale_id' => $this->id,
+        'pharmacist' => $pharmacist
+            ? $pharmacist->first_name . ' ' . $pharmacist->last_name
+            : null,
+        'sale_date' => $this->sale_date,
+       'items' => $this->salesItems ? $this->salesItems->map(function ($item) {
+    return [
+        'medicine_name' => optional($item->medicine)->name,
+        'quantity' => $item->quantity,
+        'price' => $item->price,
+    ];
+})->values() : collect([]), ];
+
     }
 }
