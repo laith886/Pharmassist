@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\SaleRepresentative;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendSupplyOrder;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Str;
 
 class PurchaseItemRepository implements PurchaseItemsRepositoryInterface
 {
@@ -82,26 +85,34 @@ private function CreatePurchaseItems(Purchase $purchase,array $items){
 
 
 }
-public function export(array $purchaseItems,Purchase $purchase)
-   {
-       $filename = "SupplyOrder_{$purchase->id}.csv";
-       $path = storage_path("app/public/{$filename}");
-       $handle = fopen($path, 'w');
+public function export(array $purchaseItems, Purchase $purchase)
+{
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
 
-       fputcsv($handle, ['Purchase_id','Medicine_id','Medicine Name', 'Quantity','price']);
+    // العناوين
+    $sheet->fromArray(['Purchase_id','Medicine_id','Medicine Name', 'Quantity','Price'], null, 'A1');
 
-       foreach ($purchaseItems as $item) {
-           fputcsv($handle,
-           [$purchase->id,
-           $item['medicine']->id,
+    $row = 2;
+    foreach ($purchaseItems as $item) {
+        $sheet->fromArray([
+            $purchase->id,
+            $item['medicine']->id,
             $item['medicine']->name,
-             $item['quantity'],
-              $item['price'] ?? 0]);
-       }
+            $item['quantity'],
+            $item['price'] ?? 0
+        ], null, "A{$row}");
+        $row++;
+    }
 
-       fclose($handle);
+    // حفظ الملف بصيغة XLSX
+    $filename = "SupplyOrder_{$purchase->id}.xlsx";
+    $path = storage_path("app/public/{$filename}");
 
-       return $path;
+    $writer = new Xlsx($spreadsheet);
+    $writer->save($path);
+
+    return $path; // أو يمكنك return asset("storage/{$filename}");
 }
 
 public function MakeSupplyOrder(array $items){

@@ -9,21 +9,24 @@ use App\Repositories\PurchaseItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//---------------------------------Medicine--------------------------------
+//---------------------------------Medicine----------------------------------
 Route::apiResource('medicines',MedicineController::class);
 Route::get('ShowByName/{name}',[MedicineController::class,'ShowByName']);
 Route::get('GetByCategoryName/{categoryName}',[MedicineController::class,'getMedicinesByCategoryName']);
-//--------------------------------End Medicine--------------------------------
+//--------------------------------End Medicine-------------------------------
 
-//--------------------------------Pharmacist----------------------------------
+
+//--------------------------------Pharmacist---------------------------------
 Route::post('RegisterPharmasict',[PharmacistController::class,'create']);
 Route::post('Login',[PharmacistController::class,'login']);
-//-------------------------------End Pharmacist--------------------------------
+//-------------------------------End Pharmacist------------------------------
+
 
 //--------------------------------SELL Medicine------------------------------
 Route::post('SellMedicine',[SaleItemController::class,'Sell'])->middleware('auth:sanctum');
 Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales'])->middleware('auth:sanctum');
 //--------------------------------END SELL-----------------------------------
 
-//--------------------------------Request Supply------------------------------
+
+//--------------------------------Request Supply-----------------------------
 Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');

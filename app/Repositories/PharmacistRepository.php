@@ -67,8 +67,13 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     }
 
     public function GetPharmacistSales(){
-        $sales = Sale::where('pharmacist_id', Auth::id())->get();
-        return $sales;
-    }
+    $pharmacistId = Auth::id(); // ✅ assign to variable first
 
+    $saleItems = SaleItem::whereHas('sale', function ($query) use ($pharmacistId) {
+        $query->where('pharmacist_id', $pharmacistId);
+    })->get();
+
+    return $saleItems;
+
+}
 }

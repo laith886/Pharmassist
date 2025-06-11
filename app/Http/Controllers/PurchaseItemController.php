@@ -41,7 +41,6 @@ class PurchaseItemController extends Controller
         //
     }
 
-
     public function update(Request $request, PurchaseItem $purchaseItem)
     {
         //
@@ -51,12 +50,14 @@ class PurchaseItemController extends Controller
     {
         //
     }
+    
    public function MakeSupplyOrder(MakeSupplyOrderRequest $request)
     {
         $validated = $request->validated();
-        $items = $validated['items'];
-        $saleRepresentativeId = $validated['sale_representative_id'];
 
+        $items = $validated['items'];
+
+        $saleRepresentativeId = $validated['sale_representative_id'];
 
         $response = $this->purchaseItemRepository->MakeSupplyOrder([
             'items' => $items,
