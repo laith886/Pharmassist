@@ -47,7 +47,7 @@ class MedicineRepository implements MedicineRepositoryInterface
     }
     public function getMedicinesByCategoryName(string $categoryName)
     {
-        $category = Category::where('name', $categoryName)->first();
+        $category = Category::where('category_name', $categoryName)->first();
 
         if (!$category) {
             return null;

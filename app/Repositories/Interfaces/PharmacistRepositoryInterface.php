@@ -11,4 +11,6 @@ interface PharmacistRepositoryInterface
     public function delete(int $id): bool;
     public function login(array $credentials);
     public function GetPharmacistSales();
+
+     public function GetPharmacistPurchases();
 }

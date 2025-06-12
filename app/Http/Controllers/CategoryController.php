@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\GetAallCategories;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    protected $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $CategoryRepository)
+    {
+        $this->categoryRepository = $CategoryRepository;
+    }
     public function index()
     {
-        //
+        $categories= $this->categoryRepository->GetAllCategories();
+        return GetAallCategories::collection($categories);
     }
 
     /**

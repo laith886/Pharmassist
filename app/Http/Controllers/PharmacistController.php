@@ -88,7 +88,7 @@ class PharmacistController extends Controller
         if (!$PurchaseItems) {
         return response()->json(['message' => 'Not Found'], 404);
     }
-
+        
         //return  GetPharmacistSales::collection($PurchaseItems);
         return GetPharmacistPurchase::collection($PurchaseItems);
     }

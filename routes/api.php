@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\PurchaseItemController;
@@ -31,3 +32,8 @@ Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales
 //--------------------------------Request Supply-----------------------------
 Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');
 Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase'])->middleware('auth:sanctum');
+//--------------------------------End     Supply-----------------------------
+
+
+//--------------------------------Categories-----------------------------
+Route::get('GetAllCategories',[CategoryController::class,'index']);

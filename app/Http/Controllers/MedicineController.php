@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MedicinesRequests\StoreMedicineRequest;
 use App\Http\Requests\MedicinesRequests\UpdateMedicineRequest;
+use App\Http\Resources\GetAllMedicines;
 use App\Repositories\Interfaces\MedicineRepositoryInterface;
 
 class MedicineController extends Controller
@@ -18,7 +19,8 @@ class MedicineController extends Controller
 //-------------------------CRUD--------------------------
     public function index()
     {
-        return $this->medicineRepository->all();
+        $medicines= $this->medicineRepository->all();
+        return  GetAllMedicines::collection($medicines);
     }
 
     public function store(StoreMedicineRequest $request)
@@ -58,13 +60,16 @@ class MedicineController extends Controller
 
     public function getMedicinesByCategoryName($categoryName)
     {
+        if($categoryName=='All'){
+            return $this->index();
+        }
         $medicines = $this->medicineRepository->getMedicinesByCategoryName($categoryName);
 
         if ($medicines->isEmpty()) {
             return response()->json(['message' => 'No medicines found or category does not exist.'], 404);
         }
 
-        return response()->json($medicines);
+        return GetAllMedicines::collection($medicines);
     }
 
 

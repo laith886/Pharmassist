@@ -23,7 +23,7 @@ class GetPharmacistPurchase extends JsonResource
                 'quantity' => $item->quantity,
                 'price' => $item->price,
             ];
-        })->values(), // ensure it's array not collection
+        })->values(), 
     ];
 
 

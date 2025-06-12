@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\MedicineRepositoryInterface;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
 use App\Repositories\Interfaces\PurchaseItemsRepositoryInterface;
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SaleItemRepositoryInterface::class, SaleItemRepository::class);
         $this->app->bind(PharmacistRepositoryInterface::class, PharmacistRepository::class);
         $this->app->bind(PurchaseItemsRepositoryInterface::class,PurchaseItemRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class,CategoryRepository::class);
     }
     public function boot(): void
     {
