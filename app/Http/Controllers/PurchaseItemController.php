@@ -7,6 +7,7 @@ use App\Models\PurchaseItem;
 use Illuminate\Http\Request;
 use App\Repositories\PurchaseItemRepository;
 use App\Repositories\Interfaces\PurchaseItemsRepositoryInterface;
+use App\Models\Purchase;
 class PurchaseItemController extends Controller
 {
     protected $purchaseItemRepository;
@@ -50,7 +51,7 @@ class PurchaseItemController extends Controller
     {
         //
     }
-    
+
    public function MakeSupplyOrder(MakeSupplyOrderRequest $request)
     {
         $validated = $request->validated();
@@ -67,4 +68,7 @@ class PurchaseItemController extends Controller
 
         return $response;
     }
+
+   
+
 }

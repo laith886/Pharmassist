@@ -64,6 +64,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
             'message' => 'Login Success',
             'pharmacist' => $pharmacist,
             'token' => $token,
+            'Is_admin'=>$pharmacist->is_admin
         ]);
     }
 

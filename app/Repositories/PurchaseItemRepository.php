@@ -87,32 +87,44 @@ private function CreatePurchaseItems(Purchase $purchase,array $items){
 }
 public function export(array $purchaseItems, Purchase $purchase)
 {
-    $spreadsheet = new Spreadsheet();
+     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    // العناوين
-    $sheet->fromArray(['Purchase_id','Medicine_id','Medicine Name', 'Quantity','Price'], null, 'A1');
+    $sheet->fromArray(['Purchase_id', 'Medicine_id', 'Medicine Name', 'Quantity', 'Price'], null, 'A1');
 
     $row = 2;
     foreach ($purchaseItems as $item) {
-        $sheet->fromArray([
-            $purchase->id,
-            $item['medicine']->id,
-            $item['medicine']->name,
-            $item['quantity'],
-            $item['price'] ?? 0
-        ], null, "A{$row}");
+        $sheet->setCellValue("A{$row}", $purchase->id);
+        $sheet->setCellValue("B{$row}", $item['medicine']->id);
+        $sheet->setCellValue("C{$row}", $item['medicine']->name);
+        $sheet->setCellValue("D{$row}", $item['quantity']);
+        $sheet->setCellValue("E{$row}", $item['price'] ?? 0);
         $row++;
     }
 
-    // حفظ الملف بصيغة XLSX
+    // تحديد الخلايا التي يجب أن تبقى غير مقفلة (عمود E فقط)
+    $highestRow = $sheet->getHighestRow();
+
+    for ($r = 2; $r <= $highestRow; $r++) {
+        // إلغاء القفل على الخلايا في عمود E
+        $sheet->getCell("E{$r}")->getStyle()->getProtection()->setLocked(false);
+    }
+
+    // باقي الخلايا تبقى مقفلة حسب الافتراضي
+    $sheet->getProtection()->setSheet(true);
+    $sheet->getProtection()->setPassword('12345'); // كلمة مرور اختيارية
+    $sheet->getProtection()->setInsertRows(false);
+    $sheet->getProtection()->setInsertColumns(false);
+    $sheet->getProtection()->setDeleteRows(false);
+    $sheet->getProtection()->setDeleteColumns(false);
+
     $filename = "SupplyOrder_{$purchase->id}.xlsx";
     $path = storage_path("app/public/{$filename}");
 
     $writer = new Xlsx($spreadsheet);
     $writer->save($path);
 
-    return $path; // أو يمكنك return asset("storage/{$filename}");
+    return $path;
 }
 
 public function MakeSupplyOrder(array $items){
@@ -133,8 +145,8 @@ public function MakeSupplyOrder(array $items){
 
      $email = $representative->email;
 
-     Mail::to($email)->send(new SendSupplyOrder($filePath));
 
+    Mail::to($email)->send(new SendSupplyOrder($filePath));
 
     return ['message' => 'Request sent successfully'];
 }
