@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PharmacistRequests\RegisterPharmacistRequest;
 use App\Http\Requests\PharmacistRequests\UpdatePharmacistRequest;
+use App\Http\Resources\GetPharmacistProfile;
 use App\Http\Resources\GetPharmacistPurchase;
 use App\Http\Resources\GetPharmacistSales;
 use App\Models\Pharmacist;
@@ -88,10 +89,17 @@ class PharmacistController extends Controller
         if (!$PurchaseItems) {
         return response()->json(['message' => 'Not Found'], 404);
     }
-        
+
         //return  GetPharmacistSales::collection($PurchaseItems);
         return GetPharmacistPurchase::collection($PurchaseItems);
     }
 
+    public function GetPharmacistProfile(){
+        $PharmacistProfile=$this->pharmacistRepository->GetPharmacistProfile();
+
+        return GetPharmacistProfile::collection($PharmacistProfile);
+
+
+    }
 
 }

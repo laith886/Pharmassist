@@ -13,4 +13,7 @@ interface PharmacistRepositoryInterface
     public function GetPharmacistSales();
 
      public function GetPharmacistPurchases();
+
+     public function  GetPharmacistProfile();
+
 }

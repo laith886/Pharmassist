@@ -76,7 +76,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
 }
 
-public function GetPharmacistPurchases(){
+    public function GetPharmacistPurchases(){
     $pharmacistId = Auth::id();
 
     $purchases = Purchase::with(['pharmacist', 'PurchaseItems.medicine'])->get();
@@ -84,5 +84,13 @@ public function GetPharmacistPurchases(){
 
 }
 
+
+    public function GetPharmacistProfile(){
+        $pharmacist_id=Auth::id();
+
+        $pharmacist=Pharmacist::find($pharmacist_id);
+
+        return $pharmacist;
+    }
 
 }
