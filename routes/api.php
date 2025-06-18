@@ -26,13 +26,13 @@ Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfil
 
 //--------------------------------SELL Medicine------------------------------
 Route::post('SellMedicine',[SaleItemController::class,'Sell'])->middleware('auth:sanctum');
-Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales'])->middleware('auth:sanctum');
+Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales']);
 //--------------------------------END SELL-----------------------------------
 
 
 //--------------------------------Request Supply-----------------------------
 Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');
-Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase'])->middleware('auth:sanctum');
+Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase']);
 //--------------------------------End     Supply-----------------------------
 
 

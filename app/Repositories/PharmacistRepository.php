@@ -69,7 +69,6 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     }
 
     public function GetPharmacistSales(){
-    $pharmacistId = Auth::id();
 
      $sales = Sale::with(['pharmacist', 'salesItems.medicine'])->get();
     return $sales;
@@ -77,7 +76,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 }
 
     public function GetPharmacistPurchases(){
-    $pharmacistId = Auth::id();
+   
 
     $purchases = Purchase::with(['pharmacist', 'PurchaseItems.medicine'])->get();
     return $purchases;
