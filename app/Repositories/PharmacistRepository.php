@@ -76,7 +76,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 }
 
     public function GetPharmacistPurchases(){
-   
+
 
     $purchases = Purchase::with(['pharmacist', 'PurchaseItems.medicine'])->get();
     return $purchases;
@@ -91,5 +91,9 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
         return $pharmacist;
     }
+    public function GetAllPharmacists(){
 
+           return Pharmacist::all();
+
+    }
 }

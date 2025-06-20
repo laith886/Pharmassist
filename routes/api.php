@@ -20,6 +20,7 @@ Route::get('GetByCategoryName/{categoryName}',[MedicineController::class,'getMed
 //--------------------------------Pharmacist---------------------------------
 Route::post('RegisterPharmasict',[PharmacistController::class,'create']);
 Route::post('Login',[PharmacistController::class,'login']);
+Route::get('getAllPharmacists',[PharmacistController::class,'GetAllPharmacists']);
 Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfile'])->middleware('auth:sanctum');
 //-------------------------------End Pharmacist------------------------------
 
