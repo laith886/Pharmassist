@@ -54,7 +54,7 @@ class MedicineController extends Controller
     {
         $medicine = $this->medicineRepository->findByName($name);
 
-        return response()->json($medicine,200);
+        return new GetAllMedicines($medicine);
     }
 
 
