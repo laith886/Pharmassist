@@ -35,16 +35,11 @@ class MedicineRepository implements MedicineRepositoryInterface
         $medicine = Medicine::findOrFail($id);
         return $medicine->delete();
     }
-    public function findByName(string $name)
-    {
-        $medicine = Medicine::whereRaw('BINARY LOWER(Name) = {name}', [strtolower($name)])->firstOrFail();
+public function findByName(string $name)
+{
+    return Medicine::whereRaw('LOWER(name) = ?', [strtolower($name)])->first();
+}
 
-        if (!$medicine) {
-            return null;
-        }
-
-        return $medicine;
-    }
     public function getMedicinesByCategoryName(string $categoryName)
     {
         $category = Category::where('category_name', $categoryName)->first();

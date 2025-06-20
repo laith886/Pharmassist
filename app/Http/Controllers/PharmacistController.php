@@ -106,8 +106,8 @@ class PharmacistController extends Controller
 
         return GetPharmacistProfile::collection($pharmacists);
 
-
-
-
     }
+
+
+
 }
