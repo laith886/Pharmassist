@@ -97,7 +97,7 @@ class PharmacistController extends Controller
     public function GetPharmacistProfile(){
         $PharmacistProfile=$this->pharmacistRepository->GetPharmacistProfile();
 
-        return new GetPharmacistProfile($PharmacistProfile);
+       return response()->json(['data'=>new GetPharmacistProfile($PharmacistProfile)]);
 
 
     }

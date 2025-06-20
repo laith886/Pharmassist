@@ -10,14 +10,14 @@ class GetPharmacistProfile extends JsonResource
 
     public function toArray(Request $request): array
     {
-         return [
-        'data' => [
-            'first_name' => $this->first_name,
+         return
+            [
+                'first_name' => $this->first_name,
             'last_name'  => $this->last_name,
             'user_name'  => $this->username,
             'phone'      => $this->phone,
             'salary'     => $this->salary,
-        ],
-    ];
+            ];
+
     }
 }
