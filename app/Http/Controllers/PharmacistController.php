@@ -101,7 +101,7 @@ class PharmacistController extends Controller
 
 
     }
-    public function GetAllPharmacist(){
+    public function GetAllPharmacists(){
         $pharmacists=$this->pharmacistRepository->GetAllPharmacists();
 
         return GetPharmacistProfile::collection($pharmacists);

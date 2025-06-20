@@ -16,6 +16,7 @@ class GetPharmacistProfile extends JsonResource
             'last_name'  => $this->last_name,
             'user_name'  => $this->username,
             'phone'      => $this->phone,
+            'salary'     => $this->salary,
         ],
     ];
     }
