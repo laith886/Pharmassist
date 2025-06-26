@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Category;
 use App\Models\Medicine;
 use App\Repositories\Interfaces\MedicineRepositoryInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class MedicineRepository implements MedicineRepositoryInterface
 {
@@ -13,6 +13,7 @@ class MedicineRepository implements MedicineRepositoryInterface
     {
         return  Medicine::all();
     }
+
     public function find($id)
     {
         return Medicine::findOrFail($id);
@@ -30,15 +31,17 @@ class MedicineRepository implements MedicineRepositoryInterface
         $medicine->refresh();
         return $medicine;
     }
+
     public function delete($id)
     {
         $medicine = Medicine::findOrFail($id);
         return $medicine->delete();
     }
-public function findByName(string $name)
-{
-    return Medicine::whereRaw('LOWER(name) = ?', [strtolower($name)])->first();
-}
+
+    public function findByName(string $name)
+    {
+         return Medicine::whereRaw('LOWER(name) LIKE ?', [strtolower($name) . '%'])->get();
+    }
 
     public function getMedicinesByCategoryName(string $categoryName)
     {

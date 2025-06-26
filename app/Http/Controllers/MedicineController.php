@@ -54,7 +54,12 @@ class MedicineController extends Controller
     {
         $medicine = $this->medicineRepository->findByName($name);
 
-        return new GetAllMedicines($medicine);
+       if ($medicine->isEmpty()) {
+        return response()->json(['message' => 'Medicine Not found'], 404);
+    }
+
+
+        return  GetAllMedicines::collection($medicine);
     }
 
 

@@ -18,8 +18,7 @@ use Illuminate\Support\Str;
 class PurchaseItemRepository implements PurchaseItemsRepositoryInterface
 {
 
-
-private function CheckQuantities(array $items): array
+    private function CheckQuantities(array $items): array
     {
         $PurchaseItems = [];
 
@@ -42,7 +41,7 @@ private function CheckQuantities(array $items): array
         return ['status' => true, 'data' => $PurchaseItems];
     }
 
-private function CreatePurchase(array $items){
+    private function CreatePurchase(array $items){
 
     $saleRep = SaleRepresentative::with('warehouse')->findOrFail($items['sale_representative_id']);
 
@@ -51,11 +50,11 @@ private function CreatePurchase(array $items){
     'sale_representative_id'=>$items['sale_representative_id'],
     'warehouse_id'=> $saleRep->warehouse_id,
     'purchase_date'=>now(),
-    'status_id'=>'1' //Pending
+    'status_id'=>'1'
     ]);
-}
+    }
 
-private function CreatePurchaseItems(Purchase $purchase,array $items){
+    private function CreatePurchaseItems(Purchase $purchase,array $items){
 
     $purchaseItems=[];
 
@@ -84,8 +83,9 @@ private function CreatePurchaseItems(Purchase $purchase,array $items){
 
 
 
-}
-public function export(array $purchaseItems, Purchase $purchase)
+    }
+
+    private function export(array $purchaseItems, Purchase $purchase)
 {
      $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
@@ -102,17 +102,17 @@ public function export(array $purchaseItems, Purchase $purchase)
         $row++;
     }
 
-    // تحديد الخلايا التي يجب أن تبقى غير مقفلة (عمود E فقط)
+
     $highestRow = $sheet->getHighestRow();
 
     for ($r = 2; $r <= $highestRow; $r++) {
-        // إلغاء القفل على الخلايا في عمود E
+
         $sheet->getCell("E{$r}")->getStyle()->getProtection()->setLocked(false);
     }
 
-    // باقي الخلايا تبقى مقفلة حسب الافتراضي
+
     $sheet->getProtection()->setSheet(true);
-    $sheet->getProtection()->setPassword('12345'); // كلمة مرور اختيارية
+    $sheet->getProtection()->setPassword('12345');
     $sheet->getProtection()->setInsertRows(false);
     $sheet->getProtection()->setInsertColumns(false);
     $sheet->getProtection()->setDeleteRows(false);
@@ -125,9 +125,9 @@ public function export(array $purchaseItems, Purchase $purchase)
     $writer->save($path);
 
     return $path;
-}
+    }
 
-public function MakeSupplyOrder(array $items){
+    public function MakeSupplyOrder(array $items){
 
     $check=$this->CheckQuantities($items['items']);
 
@@ -149,15 +149,6 @@ public function MakeSupplyOrder(array $items){
     Mail::to($email)->send(new SendSupplyOrder($filePath));
 
     return ['message' => 'Request sent successfully'];
-}
-
-
-
-
-
-
-
-
-
+    }
 
 }

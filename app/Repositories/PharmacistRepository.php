@@ -16,6 +16,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     public function all(){
         return Pharmacist::all();
     }
+
     public function find($id){
         return Pharmacist::find($id);
     }
@@ -27,6 +28,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
         $pharmacist->refresh();
         return $pharmacist;
     }
+
     public function register(array $data){
 
         $pharmacist = Pharmacist::create([
@@ -42,6 +44,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
         return $pharmacist;
     }
+
     public function delete(int $id): bool
     {
         $pharmacist = Pharmacist::findOrFail($id);
@@ -68,21 +71,23 @@ class PharmacistRepository implements PharmacistRepositoryInterface
         ]);
     }
 
-    public function GetPharmacistSales(){
+    public function GetPharmacistSales()
+    {
 
-     $sales = Sale::with(['pharmacist', 'salesItems.medicine'])->get();
-    return $sales;
+        $sales = Sale::with(['pharmacist', 'salesItems.medicine'])->get();
 
-}
+        return $sales;
 
-    public function GetPharmacistPurchases(){
+    }
 
+    public function GetPharmacistPurchases()
+    {
 
     $purchases = Purchase::with(['pharmacist', 'PurchaseItems.medicine'])->get();
+
     return $purchases;
 
-}
-
+    }
 
     public function GetPharmacistProfile(){
         $pharmacist_id=Auth::id();
@@ -91,6 +96,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
         return $pharmacist;
     }
+
     public function GetAllPharmacists(){
 
            return Pharmacist::all();

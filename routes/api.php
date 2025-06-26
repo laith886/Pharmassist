@@ -7,12 +7,13 @@ use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\SaleItemController;
 use App\Models\Medicine;
 use App\Repositories\PurchaseItemRepository;
+use Illuminate\Contracts\Pipeline\Hub;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 //---------------------------------Medicine----------------------------------
 Route::apiResource('medicines',MedicineController::class);
-Route::get('ShowByName/{name}',[MedicineController::class,'ShowByName']);
+Route::get('Search/{name}',[MedicineController::class,'ShowByName']);
 Route::get('GetByCategoryName/{categoryName}',[MedicineController::class,'getMedicinesByCategoryName']);
 //--------------------------------End Medicine-------------------------------
 
@@ -38,4 +39,4 @@ Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPu
 
 
 //--------------------------------Categories-----------------------------
-Route::get('GetAllCategories',[CategoryController::class,'index']);
+Route::get('GetAllCategories',action: [CategoryController::class,'index']);
