@@ -17,50 +17,6 @@ class SaleItemController extends Controller
     }
 
 
-
-
-    public function index()
-    {
-
-    }
-
-
-    public function create()
-    {
-        //
-    }
-
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show(SaleItem $saleItem)
-    {
-        //
-    }
-
-
-    public function edit(SaleItem $saleItem)
-    {
-        //
-    }
-
-
-    public function update(Request $request, SaleItem $saleItem)
-    {
-        //
-    }
-
-
-    public function destroy(SaleItem $saleItem)
-    {
-        //
-    }
-
-
     public function Sell(SellRequest $request)
     {
 

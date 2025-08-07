@@ -8,4 +8,5 @@ interface PurchaseItemsRepositoryInterface
 {
 
     public function MakeSupplyOrder(array $items);
+    public function ImportPricedSupplyOrder($filePath);
 }

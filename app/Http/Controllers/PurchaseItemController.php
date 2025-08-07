@@ -69,6 +69,14 @@ class PurchaseItemController extends Controller
         return $response;
     }
 
-   
+   public function importPricedOrder(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls'
+        ]);
 
+        $file = $request->file('file');
+        $filePath = $file->storeAs('public', 'priced_order_' . time() . '.xlsx');
+
+        return $this->purchaseItemRepository->ImportPricedSupplyOrder(storage_path('app/' . $filePath));}
 }

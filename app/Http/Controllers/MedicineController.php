@@ -16,7 +16,8 @@ class MedicineController extends Controller
         $this->medicineRepository = $medicineRepository;
     }
 
-//-------------------------CRUD--------------------------
+
+//------------------------CRUD--------------------------
     public function index()
     {
         $medicines= $this->medicineRepository->all();
