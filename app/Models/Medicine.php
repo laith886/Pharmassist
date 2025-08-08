@@ -37,4 +37,9 @@ class Medicine extends Model
     public function stockMovements() {
         return $this->hasMany(StockMovement::class);
     }
+    public function returns()
+    {
+        return $this->hasManyThrough(MedicineReturn::class, SaleItem::class);
+    }
+
 }

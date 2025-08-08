@@ -28,6 +28,7 @@ class GetPharmacistSales extends JsonResource
         'sale_date' => $this->sale_date,
        'items' => $this->salesItems ? $this->salesItems->map(function ($item) {
     return [
+        'Medicine_id'=>$item->id,
         'medicine_name' => optional($item->medicine)->name,
         'quantity' => $item->quantity,
         'price' => $item->price,

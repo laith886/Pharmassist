@@ -15,4 +15,8 @@ class SaleItem extends Model
     public function medicine() {
         return $this->belongsTo(Medicine::class);
     }
+    public function medicineReturns()
+    {
+         return $this->hasMany(MedicineReturn::class);
+    }
 }

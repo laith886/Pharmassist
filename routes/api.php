@@ -5,39 +5,37 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\SaleItemController;
-use App\Models\Medicine;
-use App\Repositories\PurchaseItemRepository;
-use Illuminate\Contracts\Pipeline\Hub;
-use Illuminate\Http\Request;
+use App\Http\Controllers\MedicineReturnController;
 use Illuminate\Support\Facades\Route;
 
 //---------------------------------Medicine----------------------------------
-Route::apiResource('medicines',MedicineController::class);
-Route::get('Search/{name}',[MedicineController::class,'ShowByName']);
-Route::get('GetByCategoryName/{categoryName}',[MedicineController::class,'getMedicinesByCategoryName']);
+    Route::apiResource('medicines',MedicineController::class);
+    Route::get('Search/{name}',[MedicineController::class,'ShowByName']);
+    Route::get('GetByCategoryName/{categoryName}',[MedicineController::class,'getMedicinesByCategoryName']);
 //--------------------------------End Medicine-------------------------------
 
 
 //--------------------------------Pharmacist---------------------------------
-Route::post('RegisterPharmasict',[PharmacistController::class,'create']);
-Route::post('Login',[PharmacistController::class,'login']);
-Route::get('getAllPharmacists',[PharmacistController::class,'GetAllPharmacists']);
-Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfile'])->middleware('auth:sanctum');
+    Route::post('RegisterPharmasict',[PharmacistController::class,'create']);
+    Route::post('Login',[PharmacistController::class,'login']);
+    Route::get('getAllPharmacists',[PharmacistController::class,'GetAllPharmacists']);
+    Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfile'])->middleware('auth:sanctum');
 //-------------------------------End Pharmacist------------------------------
 
 
 //--------------------------------SELL Medicine------------------------------
-Route::post('SellMedicine',[SaleItemController::class,'Sell'])->middleware('auth:sanctum');
-Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales']);
+    Route::post('SellMedicine',[SaleItemController::class,'Sell'])->middleware('auth:sanctum');
+    Route::get('GetPharmacistSales',[PharmacistController::class,'GetPharmacistSales']);
 //--------------------------------END SELL-----------------------------------
 
+//--------------------------------Return Medicine------------------------------
+    Route::post('ReturnMedicine', [MedicineReturnController::class, 'store']);
+//--------------------------------END Return-----------------------------------
 
 //--------------------------------Request Supply-----------------------------
-Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');
-Route::post('ImportPricedSuppOrder', [PurchaseItemController::class, 'importPricedOrder']);
-
-Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase']);
-
+    Route::post('SupplyRequest',[PurchaseItemController::class,'MakeSupplyOrder'])->middleware('auth:sanctum');
+    Route::post('ImportPricedSuppOrder', [PurchaseItemController::class, 'importPricedOrder']);
+    Route::get('GetPharmacistPurchase',[PharmacistController::class,'GetPharmacistPurchase']);
 //--------------------------------End     Supply-----------------------------
 
 

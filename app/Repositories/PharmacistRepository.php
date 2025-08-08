@@ -74,7 +74,9 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     public function GetPharmacistSales()
     {
 
-        $sales = Sale::with(['pharmacist', 'salesItems.medicine'])->get();
+       $sales = Sale::with(['pharmacist', 'salesItems.medicine'])
+        ->orderByDesc('sale_date') 
+        ->get();
 
         return $sales;
 
