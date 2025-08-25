@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
             $table->foreignId('sale_item_id')->constrained('sale_items')->cascadeOnDelete();
             $table->integer('quantity_returned');
-            $table->text('reason')->nullable();
             $table->timestamp('returned_at')->useCurrent();
             $table->timestamps();
         });
