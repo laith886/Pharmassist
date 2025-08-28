@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة التحكم</title>
+
+  {{-- Tailwind CDN لبدء سريع --}}
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Arabic", "Tajawal", Arial; }
+  </style>
+
+  {{-- Chart.js --}}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold">لوحة التحكم</h1>
+      <div class="text-sm text-gray-500">{{ now()->format('Y-m-d') }}</div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+    {{-- بطاقات سريعة --}}
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="text-sm text-gray-500">فواتير اليوم</div>
+        <div class="mt-1 text-3xl font-bold">{{ $salesTodayCount ?? 0 }}</div>
+      </div>
+
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="text-sm text-gray-500">مبيعات اليوم</div>
+        <div class="mt-1 text-3xl font-bold">
+          {{ isset($salesTodayAmount) ? number_format($salesTodayAmount, 2) : '0.00' }}
+        </div>
+      </div>
+
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="text-sm text-gray-500">مرتجعات اليوم (عبوات)</div>
+        <div class="mt-1 text-3xl font-bold">{{ $returnsTodayQty ?? 0 }}</div>
+      </div>
+
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="text-sm text-gray-500">طلبات شراء اليوم</div>
+        <div class="mt-1 text-3xl font-bold">{{ $purchasesToday ?? 0 }}</div>
+      </div>
+    </section>
+
+    {{-- ترند المبيعات لآخر 7 أيام --}}
+    <section class="p-4 bg-white rounded-xl shadow">
+      <div class="mb-2 font-semibold">مبيعات آخر 7 أيام</div>
+      <div class="h-64">
+        <canvas id="salesTrend"></canvas>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{-- مخزون منخفض --}}
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="mb-2 font-semibold">أدوية منخفضة المخزون</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-gray-500">
+              <tr>
+                <th class="text-right p-2">الدواء</th>
+                <th class="text-right p-2">المتوفر</th>
+                <th class="text-right p-2">الحد الأدنى</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($lowStock ?? [] as $m)
+                <tr class="border-t">
+                  <td class="p-2">{{ $m->name }}</td>
+                  <td class="p-2">{{ $m->quantity_in_stock }}</td>
+                  <td class="p-2">{{ $m->minimum_quantity }}</td>
+                </tr>
+              @empty
+                <tr><td class="p-2" colspan="3">لا يوجد عناصر منخفضة المخزون الآن.</td></tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {{-- قرب انتهاء الصلاحية --}}
+      <div class="p-4 bg-white rounded-xl shadow">
+        <div class="mb-2 font-semibold">أقرب انتهاء صلاحية (30 يوم)</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-gray-500">
+              <tr>
+                <th class="text-right p-2">الدواء</th>
+                <th class="text-right p-2">تاريخ الانتهاء</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($expiringSoon ?? [] as $m)
+                <tr class="border-t">
+                  <td class="p-2">{{ $m->name }}</td>
+                  <td class="p-2">{{ \Carbon\Carbon::parse($m->expiration_Date)->format('Y-m-d') }}</td>
+                </tr>
+              @empty
+                <tr><td class="p-2" colspan="2">لا يوجد عناصر قرب انتهاء الصلاحية.</td></tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {{-- الأكثر مبيعاً --}}
+    <section class="p-4 bg-white rounded-xl shadow">
+      <div class="mb-2 font-semibold">أفضل 5 أدوية مبيعًا (آخر 30 يوم)</div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="text-gray-500">
+            <tr>
+              <th class="text-right p-2">الدواء</th>
+              <th class="text-right p-2">الكمية</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($topMedicines ?? [] as $t)
+              <tr class="border-t">
+                <td class="p-2">{{ $t->name }}</td>
+                <td class="p-2">{{ $t->qty }}</td>
+              </tr>
+            @empty
+              <tr><td class="p-2" colspan="2">لا يوجد بيانات كافية.</td></tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const trendLabels = @json($trendLabels ?? []);
+    const trendValues = @json($trendValues ?? []);
+
+    new Chart(document.getElementById('salesTrend').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: trendLabels,
+        datasets: [{
+          label: 'المبيعات',
+          data: trendValues,
+          borderWidth: 2,
+          tension: 0.25
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+</body>
+</html>

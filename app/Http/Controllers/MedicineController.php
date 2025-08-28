@@ -26,7 +26,14 @@ class MedicineController extends Controller
 
     public function store(StoreMedicineRequest $request)
     {
-        $this->medicineRepository->create($request->validated());
+        $medicine=$this->medicineRepository->create($request->validated());
+
+        if($medicine){
+        return response()->json(['message' => 'medicine added successfully']);
+        }else{
+        return response()->json(['message' => 'medicine  not added !']);
+
+        }
     }
 
     public function show(int $id)

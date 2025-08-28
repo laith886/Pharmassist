@@ -14,6 +14,9 @@ use App\Repositories\MedicineRepository;
 use App\Repositories\PharmacistRepository;
 use App\Repositories\PurchaseItemRepository;
 use App\Repositories\SaleItemRepository;
+use App\Repositories\Interfaces\DashboardRepositoryInterface;
+use App\Repositories\DashboardRepository;
+
 
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PurchaseItemsRepositoryInterface::class,PurchaseItemRepository::class);
          $this->app->bind(MedicineReturnRepositoryInterface::class, MedicineReturnRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class,CategoryRepository::class);
+    $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
+
+
     }
     public function boot(): void
     {
