@@ -9,6 +9,7 @@ use App\Models\SaleItem;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UpdatePharmacistRequest;
 
 class PharmacistRepository implements PharmacistRepositoryInterface
 {
@@ -21,13 +22,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
         return Pharmacist::find($id);
     }
 
-    public function update(int $id, array $data)
-    {
-        $pharmacist = Pharmacist::findOrFail($id);
-        $pharmacist->update($data);
-        $pharmacist->refresh();
-        return $pharmacist;
-    }
+
 
     public function register(array $data){
 
@@ -75,7 +70,7 @@ class PharmacistRepository implements PharmacistRepositoryInterface
     {
 
        $sales = Sale::with(['pharmacist', 'salesItems.medicine'])
-        ->orderByDesc('sale_date') 
+        ->orderByDesc('sale_date')
         ->get();
 
         return $sales;
@@ -104,4 +99,23 @@ class PharmacistRepository implements PharmacistRepositoryInterface
            return Pharmacist::all();
 
     }
+
+   public function update(int $id, array $data)
+    {
+        $pharmacist = Pharmacist::findOrFail($id);
+
+        // تعامل مع كلمة المرور إن أُرسلت
+        if (array_key_exists('password', $data)) {
+            if (empty($data['password'])) {
+                unset($data['password']);
+            } else {
+                $data['password'] = Hash::make($data['password']);
+            }
+        }
+
+        $pharmacist->update($data);
+
+        return $pharmacist->fresh();
+    }
+
 }

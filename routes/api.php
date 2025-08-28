@@ -7,6 +7,7 @@ use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\SaleItemController;
 use App\Http\Controllers\MedicineReturnController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
 //---------------------------------Medicine----------------------------------
     Route::apiResource('medicines',MedicineController::class);
@@ -20,7 +21,8 @@ use Illuminate\Support\Facades\Route;
     Route::post('Login',[PharmacistController::class,'login']);
     Route::get('getAllPharmacists',[PharmacistController::class,'GetAllPharmacists']);
     Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfile'])->middleware('auth:sanctum');
-//-------------------------------End Pharmacist------------------------------
+    Route::put('UpdatePharmacist/{id}',[PharmacistController::class,'update']);
+    //-------------------------------End Pharmacist------------------------------
 
 
 //--------------------------------SELL Medicine------------------------------
@@ -41,3 +43,10 @@ use Illuminate\Support\Facades\Route;
 
 //--------------------------------Categories-----------------------------
 Route::get('GetAllCategories',action: [CategoryController::class,'index']);
+//--------------------------------End Categories-------------------------
+
+//--------------------------------Static Incomes-------------------------
+Route::get('/reports/net-sales', [ReportController::class, 'netSales']);
+Route::get('/reports/daily/{date?}', [ReportController::class, 'dailyNetSales']);
+Route::get('/reports/monthly/{year}/{month}', [ReportController::class, 'monthlyNetSales']);
+//--------------------------------End Static Incomes-----------------------

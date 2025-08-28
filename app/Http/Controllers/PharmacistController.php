@@ -11,7 +11,7 @@ use App\Models\Pharmacist;
 use App\Models\SaleItem;
 use App\Repositories\Interfaces\PharmacistRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PharmacistController extends Controller
 {
@@ -40,15 +40,30 @@ class PharmacistController extends Controller
     }
 
 
-    public function update(UpdatePharmacistRequest $request, int $id)
-    {
-        $pharmacist = $this->pharmacistRepository->update($id, $request->validated());
+   public function update(UpdatePharmacistRequest $request, int $id){
+    $data = $request->validated();
 
-        return response()->json([
-            'message' => 'Pharmacist updated successfully.',
-            'data' => $pharmacist
-        ]);
+    // معالجة كلمة المرور إن وُجدت
+    if (array_key_exists('password', $data)) {
+        if (empty($data['password'])) {
+            unset($data['password']);
+        } else {
+            $data['password'] = Hash::make($data['password']);
+        }
     }
+
+    // استدعاء الريبو الصحيح
+    $pharmacist = $this->pharmacistRepository->update($id, $data);
+
+    // عدم إرجاع كلمة المرور
+    unset($pharmacist->password);
+
+    return response()->json([
+        'message'     => 'Pharmacist updated successfully',
+        'pharmacist'  => $pharmacist,
+    ]);
+}
+
 
 
     public function destroy(int $id)
