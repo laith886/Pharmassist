@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('quantity_in_stock');
             $table->integer('minimum_quantity');
             $table->float('price', 8, 2);
-            $table->string('barcode');
             $table->string('sci_name');
 
             $table->timestamps();

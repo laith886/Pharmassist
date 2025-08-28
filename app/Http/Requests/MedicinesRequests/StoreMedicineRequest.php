@@ -17,13 +17,13 @@ class StoreMedicineRequest extends FormRequest
     {
         return [
             'name'=>'required|string',
-            'manufacturer_id'=>'required|exists:manufacturers,id',
-            'category_id'=>'required|exists:categories,id',
+            'manufacturer' => 'required|string|exists:manufacturers,company_name',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'string|exists:categories,category_name',
             'prescription'=>'string',
             'production_Date'=>'required|Date',
             'expiration_Date'=>'required|date|after_or_equal:production_date',
             'quantity_in_stock'=>'required|integer|min:0',
-            'barcode'=>'required|string',
             'sci_name'=>'required|string',
             'price' => 'required|numeric|min:0',
             'minimum_quantity'=>'required|numeric|min:0'

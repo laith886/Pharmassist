@@ -6,6 +6,8 @@ use App\Http\Requests\MedicinesRequests\StoreMedicineRequest;
 use App\Http\Requests\MedicinesRequests\UpdateMedicineRequest;
 use App\Http\Resources\GetAllMedicines;
 use App\Repositories\Interfaces\MedicineRepositoryInterface;
+use App\Models\Manufacturer;
+use App\Models\Category;
 
 class MedicineController extends Controller
 {
@@ -25,16 +27,32 @@ class MedicineController extends Controller
     }
 
     public function store(StoreMedicineRequest $request)
-    {
-        $medicine=$this->medicineRepository->create($request->validated());
+{
 
-        if($medicine){
-        return response()->json(['message' => 'medicine added successfully']);
-        }else{
-        return response()->json(['message' => 'medicine  not added !']);
+    $manufacturer = Manufacturer::where('company_name', $request->manufacturer)->first();
 
-        }
+    if (!$manufacturer) {
+        return response()->json(['message' => 'Manufacturer not found'], 404);
     }
+
+
+    $data = $request->validated();
+    $data['manufacturer_id'] = $manufacturer->id;
+    unset($data['manufacturer'], $data['categories']); // remove non-DB fields
+
+
+    $medicine = $this->medicineRepository->create($data);
+
+
+    $categoryIds = Category::whereIn('category_name', $request->categories)->pluck('id');
+    $medicine->categories()->attach($categoryIds);
+
+    return response()->json([
+        'message' => 'Medicine added successfully',
+        'medicine' => $medicine->load('categories') 
+    ]);
+}
+
 
     public function show(int $id)
     {

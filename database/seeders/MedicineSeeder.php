@@ -23,7 +23,6 @@ class MedicineSeeder extends Seeder
                 'quantity_in_stock' => 500,
                 'minimum_quantity' => 100,
                 'price' => 3.50,
-                'barcode' => '1234567890123',
                 'sci_name' => 'Acetaminophen',
             ],
             [
@@ -35,7 +34,6 @@ class MedicineSeeder extends Seeder
                 'quantity_in_stock' => 300,
                 'minimum_quantity' => 50,
                 'price' => 6.75,
-                'barcode' => '1234567890456',
                 'sci_name' => 'Amoxicillin',
             ],
             [
@@ -47,7 +45,6 @@ class MedicineSeeder extends Seeder
                 'quantity_in_stock' => 800,
                 'minimum_quantity' => 200,
                 'price' => 2.25,
-                'barcode' => '1234567890789',
                 'sci_name' => 'Ascorbic Acid',
             ],
         ];

@@ -29,7 +29,6 @@ class GetAllMedicines extends JsonResource
             'quantity_in_stock' => $this->quantity_in_stock,
             'minimum_quantity'  => $this->minimum_quantity,
             'price'             => $this->price,
-            'barcode'           => $this->barcode,
             'sci_name'          => $this->sci_name,
             'categories'        => $categories,
         ];
