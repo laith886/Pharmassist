@@ -12,7 +12,8 @@ class SaleRepresentativeController extends Controller
      */
     public function index()
     {
-        //
+       $representatives = SaleRepresentative::all();
+    return response()->json($representatives);
     }
 
     /**

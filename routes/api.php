@@ -8,6 +8,8 @@ use App\Http\Controllers\SaleItemController;
 use App\Http\Controllers\MedicineReturnController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
+use App\Models\SaleRepresentative;
+use App\Http\Controllers\SaleRepresentativeController;
 
 //---------------------------------Medicine----------------------------------
     Route::apiResource('medicines',MedicineController::class);
@@ -53,3 +55,5 @@ Route::get('/reports/net-sales', [ReportController::class, 'netSales']);
 Route::get('/reports/daily/{date?}', [ReportController::class, 'dailyNetSales']);
 Route::get('/reports/monthly/{year}/{month}', [ReportController::class, 'monthlyNetSales']);
 //--------------------------------End StatIncomes-----------------------
+
+Route::get('SalesRep',[SaleRepresentativeController::class,'index']);
