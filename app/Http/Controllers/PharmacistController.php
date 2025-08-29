@@ -23,11 +23,7 @@ class PharmacistController extends Controller
     {
         $this->pharmacistRepository = $PharmacistRepository;
     }
-    public function index()
-    {
-
-    }
-
+   
     public function store(RegisterPharmacistRequest $request)
     {
         return $this->pharmacistRepository->register($request->validated());

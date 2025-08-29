@@ -17,19 +17,19 @@ class SalesRepresentativeSeeder extends Seeder
             [
                 'name' => 'John Carter',
                 'phone' => '+1 555-123-4567',
-                'email'=>'la@rhbdb.com',
+                'email'=>'ibrahim.hana22@gmail.com',
                 'warehouse_id' => 1,
             ],
             [
                 'name' => 'Maria Lopez',
                 'phone' => '+1 555-987-6543',
-                'email'=>'lt@rvbdb.com',
+                'email'=>'login.login9838@gmail.com',
                 'warehouse_id' => 2,
             ],
             [
                 'name' => 'Ahmed Khan',
                 'phone' => '+49 30 5555 1234',
-                'email'=>'rtja@scacdb.com',
+                'email'=>'sukaplatz@gmail.com',
                 'warehouse_id' => 3,
             ],
         ];

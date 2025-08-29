@@ -10,7 +10,7 @@ use App\Repositories\Interfaces\ReportRepositoryInterface;
 
 class ReportRepository implements ReportRepositoryInterface
 {
-    
+
     public function getTotalSales()
     {
         return Sale::sum('total_price');
@@ -37,7 +37,7 @@ class ReportRepository implements ReportRepositoryInterface
 
         $totalReturns = MedicineReturn::whereDate('returned_at', $date)
             ->join('sale_items', 'sale_items.id', '=', 'medicine_returns.sale_item_id')
-            ->sum(DB::raw('medicine_returns.quantity_returned * sale_items.unit_price'));
+            ->sum(DB::raw('medicine_returns.quantity_returned * sale_items.price'));
 
         return $totalSales - $totalReturns;
     }
@@ -52,8 +52,10 @@ class ReportRepository implements ReportRepositoryInterface
         $totalReturns = MedicineReturn::whereYear('returned_at', $year)
             ->whereMonth('returned_at', $month)
             ->join('sale_items', 'sale_items.id', '=', 'medicine_returns.sale_item_id')
-            ->sum(DB::raw('medicine_returns.quantity_returned * sale_items.unit_price'));
+            ->sum(DB::raw('medicine_returns.quantity_returned * sale_items.price'));
 
         return $totalSales - $totalReturns;
     }
+
+    
 }

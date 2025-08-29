@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\DashboardRepositoryInterface;
+use App\Repositories\DashboardRepository;
+
 
 class DashboardController extends Controller
 {
@@ -28,4 +30,12 @@ class DashboardController extends Controller
             'trendValues'      => $trend['values'],
         ]);
     }
+
+     public function topManufacturers(DashboardRepositoryInterface $repo)
+    {
+        $data = $repo->getTopManufacturers(6);
+        return response()->json($data);
+    }
+
+
 }

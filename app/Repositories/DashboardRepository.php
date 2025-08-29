@@ -9,6 +9,7 @@ use App\Models\Medicine;
 use App\Models\MedicineReturn;
 use App\Models\Purchase;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class DashboardRepository implements DashboardRepositoryInterface
@@ -84,7 +85,7 @@ class DashboardRepository implements DashboardRepositoryInterface
             ->orderBy('d')
             ->get();
 
-        // إرجاع تواريخ كاملة (حتى لو ما في مبيعات في بعض الأيام)
+
         $labels = [];
         $values = [];
         for ($i = 0; $i < $days; $i++) {
@@ -95,4 +96,24 @@ class DashboardRepository implements DashboardRepositoryInterface
 
         return ['labels' => $labels, 'values' => $values];
     }
+
+     public function getTopManufacturers(int $limit = 6): array
+{
+    $rows = DB::table('manufacturers')
+        ->leftJoin('medicines', 'medicines.manufacturer_id', '=', 'manufacturers.id')
+        ->select(
+            'manufacturers.company_name as name',      // 👈 Alias واضح
+            DB::raw('COUNT(medicines.id) AS cnt')
+        )
+        ->groupBy('manufacturers.id', 'manufacturers.company_name')
+        ->orderByDesc('cnt')
+        ->limit($limit)
+        ->get();
+
+    return [
+        'labels' => $rows->pluck('name')->values(),                 // 👈 الآن ليست null
+        'values' => $rows->pluck('cnt')->map(fn($v) => (int)$v)->values(),
+    ];
+}
+
 }
