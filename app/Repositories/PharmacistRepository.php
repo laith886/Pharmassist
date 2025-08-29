@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pharmacist;
+use App\Models\SaleRepresentative;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\SaleItem;
@@ -10,6 +11,7 @@ use App\Repositories\Interfaces\PharmacistRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdatePharmacistRequest;
+use Illuminate\Support\Collection;
 
 class PharmacistRepository implements PharmacistRepositoryInterface
 {
@@ -117,5 +119,28 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
         return $pharmacist->fresh();
     }
+
+    public function GetAllContacts(): Collection
+{
+    $pharmacists = Pharmacist::select(['first_name','last_name','phone'])
+        ->whereNotNull('phone')
+        ->get()
+        ->map(fn ($p) => [
+            'name'  => trim($p->first_name.' '.$p->last_name),
+            'phone' => $p->phone,
+            'role'  => 'pharmacist',
+        ]);
+
+    $sales = SaleRepresentative::select(['name','phone'])
+        ->whereNotNull('phone')
+        ->get()
+        ->map(fn ($s) => [
+            'name'  => $s->name,
+            'phone' => $s->phone,
+            'role'  => 'sales_representative',
+        ]);
+
+    return $pharmacists->concat($sales)->values();
+}
 
 }

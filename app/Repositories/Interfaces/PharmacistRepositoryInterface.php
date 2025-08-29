@@ -15,6 +15,8 @@ interface PharmacistRepositoryInterface
 
      public function  GetPharmacistProfile();
 
+     public function GetAllContacts();
+
      public function GetAllPharmacists();
      public function update(int $id, array $data);
 
