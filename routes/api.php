@@ -23,6 +23,8 @@ use App\Http\Controllers\ReportController;
     Route::get('PharmacistProfile',[PharmacistController::class,'GetPharmacistProfile'])->middleware('auth:sanctum');
     Route::put('UpdatePharmacist/{id}',[PharmacistController::class,'update']);
     Route::get('GetAllContacts',[PharmacistController::class,'GetAllContacts']);
+    Route::delete('DeletePharmacist/{id}',[PharmacistController::class,'destroy'])->middleware('auth:sanctum');;
+
     //-------------------------------End Pharmacist------------------------------
 
 

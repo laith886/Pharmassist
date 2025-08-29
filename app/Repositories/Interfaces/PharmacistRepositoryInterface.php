@@ -15,6 +15,7 @@ interface PharmacistRepositoryInterface
 
      public function  GetPharmacistProfile();
 
+     
      public function GetAllContacts();
 
      public function GetAllPharmacists();

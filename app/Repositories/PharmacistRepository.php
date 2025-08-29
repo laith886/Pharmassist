@@ -44,9 +44,20 @@ class PharmacistRepository implements PharmacistRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $pharmacist = Pharmacist::findOrFail($id);
+        $currentUser = Auth::user(); // الصيدلي الحالي المسجّل دخوله
 
-        return $pharmacist->delete(); // works for soft or hard delete
+        if (!$currentUser->is_admin) {
+        throw new \Exception("You are not authorized to delete pharmacists.");
+    }
+
+
+    if ($currentUser->id === $id) {
+        throw new \Exception("You cannot delete your own account.");
+    }
+
+    $pharmacist = Pharmacist::findOrFail($id);
+
+    return $pharmacist->delete();
     }
 
     public function login(array $credentials)

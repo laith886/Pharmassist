@@ -63,13 +63,19 @@ class PharmacistController extends Controller
 
 
     public function destroy(int $id)
-    {
-        $pharmacist=Pharmacist::find($id);
+{
+    try {
+        $this->pharmacistRepository->delete($id);
 
-        if($pharmacist){
-
-        }
+        return response()->json([
+            'message' => 'Pharmacist deleted successfully.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage()
+        ], 403);
     }
+}
 
 
     public function create(RegisterPharmacistRequest $request){
@@ -124,5 +130,5 @@ class PharmacistController extends Controller
         return response()->json(['data'=>$contacts]);
     }
 
-
+    
 }
