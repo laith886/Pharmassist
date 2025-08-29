@@ -45,8 +45,8 @@ use App\Http\Controllers\ReportController;
 Route::get('GetAllCategories',action: [CategoryController::class,'index']);
 //--------------------------------End Categories-------------------------
 
-//--------------------------------Static Incomes-------------------------
+//--------------------------------StatIncomes-------------------------
 Route::get('/reports/net-sales', [ReportController::class, 'netSales']);
 Route::get('/reports/daily/{date?}', [ReportController::class, 'dailyNetSales']);
 Route::get('/reports/monthly/{year}/{month}', [ReportController::class, 'monthlyNetSales']);
-//--------------------------------End Static Incomes-----------------------
+//--------------------------------End StatIncomes-----------------------
